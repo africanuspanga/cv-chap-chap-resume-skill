@@ -1,0 +1,15 @@
+# Fails when this repo's SKILL.md differs from the one cvchapchap.com serves.
+name: Skill matches the site
+on:
+  pull_request:
+  schedule:
+    - cron: '0 6 * * 1'
+  workflow_dispatch:
+jobs:
+  diff:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          curl -sf https://www.cvchapchap.com/.well-known/agent-skills/cv-chap-chap/SKILL.md -o served.md
+          diff -u served.md cv-chap-chap/SKILL.md
